@@ -58,6 +58,11 @@ def turn(previousLong, previousLat, currentLong, currentLat):
         else:
             return "Left"
     
+def setUser(long, lat):
+    global userLong
+    global userLat
+    userLong = long
+    userLat = lat
 
 updatePosition(1, 2)
 updatePosition(1, -1)
