@@ -27,6 +27,9 @@ def updatePosition(long, lat):
     if firstRun:
         previousLong = long - userLong
         previousLat = lat - userLat
+        #so we don't set the previous values to zero next run
+        currentLong = previousLong
+        currentLat = previousLat
         firstRun = False
         print ("First run")
     else:
@@ -36,7 +39,7 @@ def updatePosition(long, lat):
         currentLong = long - userLong
         currentLat = lat - userLat
         if(checkPosition(currentLat, currentLong, turnRadius)):
-            print ()
+            print(turn(previousLong, previousLat, currentLong, currentLat))
 
 
 def checkPosition(currentLat, currentLong, turnRadius):
@@ -45,10 +48,16 @@ def checkPosition(currentLat, currentLong, turnRadius):
 #true for left, false for right
 def turn(previousLong, previousLat, currentLong, currentLat):
     if currentLong > 0:
-        if previousLat > (currentLat/currentLong)
+        if previousLat > (currentLat / currentLong) * previousLong:
+            return "Left"
+        else:
+            return "Right"
     else:
-        
+        if previousLat > (currentLat / currentLong) * previousLong:
+            return "Right"
+        else:
+            return "Left"
     
 
-updatePosition(-5, 5)
-updatePosition(-5, -5)
+updatePosition(1, 2)
+updatePosition(1, -1)
