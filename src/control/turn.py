@@ -1,6 +1,6 @@
+import RPi.GPIO as GPIO
 import os
 from time import sleep
-import RPi.GPIO as GPIO
 
 # note: when done using motors call GPIO.cleanup(). when you want to reuse turn() functions call setup()
 
@@ -8,8 +8,8 @@ left_motor_a = 23  # left motor a pin number
 left_motor_b = 24  # left motor b pin number
 left_motor_e = 25  # left motor enable pin number
 right_motor_e = 26  # right motor a pin number
-right_motor_a = 27  # right motor b pin number
-right_motor_b = 28  # right motor enable pin number
+right_motor_a = 35  # right motor b pin number
+right_motor_b = 37  # right motor enable pin number
 left_command_audio = "randomfile"  # honor left command audio file directory with filename
 right_command_audio = "randomfile2"  # honor right command audio file directory with filename
 
@@ -20,7 +20,7 @@ def setup(*args):
     :param args: some arguments
     """
     GPIO.setmode(GPIO.BCM)  # setup pin number references
-    if len(args) > 0 and len(args)%3 == 0:
+    if len(args) > 0 and len(args) % 3 == 0:
         for n in args:
             GPIO.setup(n, GPIO.OUT)
 
@@ -51,6 +51,10 @@ def turnMotorOn(pin_number_e, pin_number_a, pin_number_b, turn_forward):
 def turn_motor_off(pin_number_e):
     GPIO.output(pin_number_e, GPIO.LOW)
 
+def turnMotorOff(pin_number_a, pin_number_b):
+    GPIO.output(pin_number_a, GPIO.Low)
+    GPIO.output(pin_number_b, GPIO.Low)
+    
 def pull(pin_number_e, pin_number_a, pin_number_b, elapse_time):
     """
 
@@ -94,3 +98,10 @@ def turn(direction="left", post_audio_elapse_time=1.5, motor_runtime_elapse_time
         sleep(post_audio_elapse_time)
         pull(right_motor_e, right_motor_a, right_motor_b, motor_runtime_elapse_time)
         release(right_motor_e, right_motor_a, right_motor_b, motor_runtime_elapse_time)
+
+turnMotorOn(right_motor_e, right_motor_a, right_motor_b, True)
+sleep(1.5)
+turnMotorOn(right_motor_e, right_motor_a, right_motor_b, False)
+sleep(1.5)
+turnMotorOff(right_motor_a, right_motor_b)
+sleep(1.5)
