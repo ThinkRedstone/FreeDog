@@ -15,6 +15,12 @@ turnRadius = 0
 firstRun = True
 #longtitute is x
 
+def setUser(long, lat):
+    global userLong
+    global userLat
+    userLong = long
+    userLat = lat
+
 def updatePosition(long, lat):
     global firstRun
     global userLong
