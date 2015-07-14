@@ -6,10 +6,10 @@
 
 __author__ = "thinkredstone"
 __date__ = "$Jul 13, 2015 2:03:09 PM$"
-from gps.gpsData import startGPS, getLongitude, getLatitude
+from gpsProcessing.gpsData import startGPS, getLongitude, getLatitude
 
 if __name__ == "__main__":
     startGPS()
-    print getLatitude()
+    print getLongitude()
     print getLatitude()
     
