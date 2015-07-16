@@ -38,7 +38,7 @@ def getLongitude():
 
 def getLatitude():
     global gpsd
-    return gpsd.fix.longitude
+    return gpsd.fix.latitude
 
 def closeGPS():#if you don't close the GPS, the programme won't stop as th gps inpt stream is still running
     global gpsp
