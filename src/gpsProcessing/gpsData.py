@@ -28,16 +28,23 @@ class GpsPoller(threading.Thread):
 
 
 def startGPS():
-    global gpsd 
-    gpsd = GpsPoller()
+    global gpsp 
+    gpsp = GpsPoller()
     gpsp.start()
     
 def getLongitude():
     global gpsd
     return gpsd.fix.longitude
+
 def getLatitude():
     global gpsd
     return gpsd.fix.longitude
+
+def closeGPS():#if you don't close the GPS, the programme won't stop as th gps inpt stream is still running
+    global gpsp
+    print "\nKilling Thread..."
+    gpsp.running = False
+    gpsp.join() # wait for the thread to finish what it's doing
 
 if __name__ == '__main__':
 	gpsp = GpsPoller() # create the thread
