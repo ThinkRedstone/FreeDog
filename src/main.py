@@ -7,6 +7,7 @@
 __author__ = "thinkredstone"
 __date__ = "$Jul 13, 2015 2:03:09 PM$"
 from gpsProcessing.gpsData import startGPS, getLongitude, getLatitude, closeGPS
+from placment.circle import updatePosition
 import os
 from time import sleep
 
@@ -17,6 +18,7 @@ if __name__ == "__main__":
             os.system('clear')
             print 'Long: ', getLongitude()
             print 'Lat: ', getLatitude()
+            print 'Turn: ', updatePosition(getLongitude(),getLatitude())
             sleep(1)
     except(KeyboardInterrupt, SystemExit):
         closeGPS()
