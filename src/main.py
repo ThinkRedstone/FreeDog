@@ -7,13 +7,17 @@
 __author__ = "thinkredstone"
 __date__ = "$Jul 13, 2015 2:03:09 PM$"
 from gpsProcessing.gpsData import startGPS, getLongitude, getLatitude, closeGPS
+import os
+from time import sleep
 
 if __name__ == "__main__":
     startGPS()
     try:
         while True:
-            print getLongitude()
-            print getLatitude()
+            os.system('clear')
+            print 'Long: ', getLongitude()
+            print 'Lat: ', getLatitude()
+            sleep(1)
     except(KeyboardInterrupt, SystemExit):
         closeGPS()
         print 'Exiting...'
