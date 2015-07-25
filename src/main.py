@@ -22,7 +22,7 @@ if __name__ == "__main__":
             print 'Lat: ', getLatitude()
             direction = updatePosition(getLongitude(),getLatitude())
             print 'Turn: ', direction
-            engines.turn(direction)
+            engines.turn(direction, 1)
             sleep(1)
     except(KeyboardInterrupt, SystemExit):
         closeGPS()
