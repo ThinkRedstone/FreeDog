@@ -39,12 +39,12 @@ def turnMotorOn(pin_number_a, pin_number_b, turn_forward):
         GPIO.output(pin_number_a, GPIO.HIGH)
         GPIO.output(pin_number_b, GPIO.LOW)
     else:
-        GPIO.output(pin_number_a, GPIO.Low)
+        GPIO.output(pin_number_a, GPIO.LOW)
         GPIO.output(pin_number_b, GPIO.HIGH)
 
 def turnMotorOff(pin_number_a, pin_number_b):
-    GPIO.output(pin_number_a, GPIO.Low)
-    GPIO.output(pin_number_b, GPIO.Low)
+    GPIO.output(pin_number_a, GPIO.LOW)
+    GPIO.output(pin_number_b, GPIO.LOW)
     
 def pull(pin_number_a, pin_number_b, elapse_time):
     turnMotorOn(pin_number_a, pin_number_b, True)
