@@ -19,7 +19,7 @@ class Logger(Thread):
         self.index = 0
     def run(self):
         while self.running:
-            log(self.index, 1, 2)
+            log(self.index)
             self.index += 1
             sleep(1)
             
