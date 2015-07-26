@@ -9,6 +9,7 @@ __date__ = "$Jul 26, 2015 1:27:44 PM$"
 from sqlProcessing import *
 from threading import Thread
 from time import sleep
+from gpsProcessing.gpsData import startGPS, getLongitude, getLatitude, closeGPS
 
 class Logger(Thread):
     def __init__(self):
@@ -22,16 +23,18 @@ class Logger(Thread):
             self.index += 1
             sleep(1)
             
-def log(index, long, lat):
-    execute("insert into bla values(%d,%d,%d)" % (index, long, lat))
+def log(index):
+    execute("insert into bla values(%d,%d,%d)" % (index, getLongitude(), getLatitude()))
     
 def startLogger():
     global logger
+    startGPS()
     logger = Logger()
     logger.start()
     
 def stopLogger():
     global logger
+    closeGPS()
     logger.running = False
     logger.join()
 
