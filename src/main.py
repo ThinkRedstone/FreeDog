@@ -11,10 +11,12 @@ from placment.circle import updatePosition
 from control import engines
 import os
 from time import sleep
+from sql.logger import startLogger, stopLogger
 
 if __name__ == "__main__":
     startGPS()
     engines.setup()
+    startLogger()
     try:
         while True:
             os.system('clear')
@@ -25,5 +27,6 @@ if __name__ == "__main__":
             engines.turn(direction, 1)
             sleep(1)
     except(KeyboardInterrupt, SystemExit):
-        closeGPS()
-        print 'Exiting...'
+		stopLogger()
+		closeGPS()
+	        print 'Exiting...'
