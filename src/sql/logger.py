@@ -6,10 +6,7 @@
 
 __author__ = "thinkredstone"
 __date__ = "$Jul 26, 2015 1:27:44 PM$"
-from gpsProcessing.gpsData import closeGPS
-from gpsProcessing.gpsData import getLatitude
-from gpsProcessing.gpsData import getLongitude
-from gpsProcessing.gpsData import startGPS
+from gpsProcessing.gpsData import startGPS, getLongitude, getLatitude, closeGPS
 from sqlProcessing import *
 from threading import Thread
 from time import sleep
@@ -18,7 +15,6 @@ class Logger(Thread):
     def __init__(self):
         Thread.__init__(self)
         self.running = True
-        startConnection("test")
         self.index = 0
     def run(self):
         while self.running:
@@ -28,8 +24,9 @@ class Logger(Thread):
             
 def log(index):
     execute("insert into log values(%d,%d,%d)" % (index, getLongitude(), getLatitude()))
-    
+
 def startLogger():
+    startConnection("test")
     deleteTable("log")
     createTable("log")
     global logger
