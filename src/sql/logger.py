@@ -18,7 +18,7 @@ class Logger(Thread):
     def __init__(self):
         Thread.__init__(self)
         self.running = True
-        startConnection("horse")
+        startConnection("test")
         self.index = 0
     def run(self):
         while self.running:
@@ -27,7 +27,7 @@ class Logger(Thread):
             sleep(1)
             
 def log(index):
-    execute("insert into bla values(%d,%d,%d)" % (index, getLongitude(), getLatitude()))
+    execute("insert into log values(%d,%d,%d)" % (index, getLongitude(), getLatitude()))
     
 def startLogger():
     deleteTable("log")
