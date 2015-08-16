@@ -8,13 +8,11 @@ __author__ = "thinkredstone"
 __date__ = "$Jul 13, 2015 2:03:09 PM$"
 from gpsProcessing.gpsData import startGPS, getLongitude, getLatitude, closeGPS
 from placment.circle import updatePosition
-from control import engines
 import os
 from time import sleep
 
 if __name__ == "__main__":
     startGPS()
-    engines.setup()
     try:
         while True:
             os.system('clear')
@@ -22,7 +20,6 @@ if __name__ == "__main__":
             print 'Lat: ', getLatitude()
             direction = updatePosition(getLongitude(),getLatitude())
             print 'Turn: ', direction
-            engines.turn(direction, 1)
             sleep(1)
     except(KeyboardInterrupt, SystemExit):
         closeGPS()
