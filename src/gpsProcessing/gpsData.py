@@ -4,6 +4,8 @@
 
 
 import os
+import datetime
+import calendar
 from gps import *
 from time import *
 import time
@@ -39,6 +41,33 @@ def getLatitude():
     global gpsd
     return gpsd.fix.latitude
 
+def getAltitude():
+    global gpsd
+    return gpsd.fix.altitude
+
+def getTime():
+        global gpsd
+        TIMEZ = 3  
+        if gpsd.utc != None and gpsd.utc != '':
+                tzhour = int(gpsd.utc[11:13])+TIMEZ
+                if (tzhour>23):
+                        tzhour = (int(gpsd.utc[11:13])+TIMEZ)-24
+            
+                dateUTC = (datetime.datetime(int(gpsd.utc[0:4]),int(gpsd.utc[5:7]), int(gpsd.utc[8:10]))- datetime.datetime(1970,1,1)).total_seconds()
+                dateFix = gpsd.utc[8:10] +'-'+ gpsd.utc[5:7] +'-'+ gpsd.utc[0:4]
+                
+                timeUTC = tzhour*3600 + int(gpsd.utc[14:16])*60 + int(gpsd.utc[17:19])
+                TimeFix = str(tzhour) + gpsd.utc[13:19]
+    
+                UTCseconds = dateUTC + timeUTC
+                print UTCseconds
+##                print time.mktime(d_utc.timetuple())
+##                print calendar.timegm(d_utc.timetuple())
+                gpstime = dateFix  + ' ' + TimeFix + ';' + str(UTCseconds)
+                
+                print 'Setting system time to GPS time...'
+                print gpstime
+        return gpstime
 def closeGPS():#if you don't close the GPS, the programme won't stop as th gps inpt stream is still running
     global gpsp
     print "\nKilling Thread..."
