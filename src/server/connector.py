@@ -7,7 +7,7 @@
 __author__ = "thinkredstone"
 __date__ = "$Jul 13, 2015 2:03:09 PM$"
 import socket
-from gpsProcessing.gpsData import startGPS, getLongitude, getLatitude, closeGPS
+from gpsProcessing.gpsData import startGPS,getTime,getAltitude, getLongitude, getLatitude, closeGPS
 from placment.circle import updatePosition
 import RPi.GPIO as GPIO
 from control import engines
@@ -49,7 +49,7 @@ def closeConnection():
     
 def sendData(index):
     global connector
-    toSend = str(index) + ";" + str(getLongitude()) + ';' + str(getLatitude())
+    toSend = str(index) + ";" + str(getLongitude()) + ';' + str(getLatitude()) + ';' + str(getAltitude()) + ';' + getTime()
     print "Send to server " + toSend
     connector.connection.send(toSend)
 
@@ -65,7 +65,7 @@ def getUserLatitude():
     return getData(2)
 
 def getDistance():
-    return getData(4)
+    return getData(6)
 
 def getCommand():
     return getData(5)
