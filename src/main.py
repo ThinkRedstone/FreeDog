@@ -7,7 +7,7 @@
 __author__ = "thinkredstone"
 __date__ = "$Jul 13, 2015 2:03:09 PM$"
 from gpsProcessing.gpsData import *
-from placment.circle import updatePosition
+from placment.circle import *
 from server.connector import *
 from control.engines import *
 import os
@@ -19,15 +19,15 @@ if __name__ == "__main__":
     try:
         while True:
             os.system('clear')
-            print 'Long: ', getLongitude()
-            print 'Lat: ', getLatitude()
-            updateUser(getUserLongtitude(),getUserLatitude())
+            print 'Long: ', getLongitude()  #from raspberry
+            print 'Lat: ', getLatitude() #from raspberry
+            setUser(getUserLongtitude(),getUserLatitude()) #from client
             turnRadius = getDistance()
             direction = updatePosition(getLongitude(),getLatitude())
             print 'Turn: ', direction
-            if(direction is 'left' || getCommand() is 'TURN_LEFT':
+            if((direction is 'left') or (getCommand() is 'TURN_LEFT')):
                 turnLeft()
-            if(direction is 'right' || getCommand is 'TURN_RIGHT':
+            if((direction is 'right') or (getCommand is 'TURN_RIGHT')):
                 turnRight()
     except(KeyboardInterrupt, SystemExit):
         closeConnection()

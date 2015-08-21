@@ -15,13 +15,15 @@ turnRadius = 0
 firstRun = True
 #longtitute is x
 
-def setUser(long, lat):
+def setUser(longitude, latitude):
     global userLong
     global userLat
-    userLong = long
-    userLat = lat
+##    userLong = longitude
+##    userLat = latitude
+    userLong = 5555
+    userLat = 4444
 
-def updatePosition(long, lat):
+def updatePosition(longitude, latitude):
     global firstRun
     global userLong
     global userLat 
@@ -31,8 +33,8 @@ def updatePosition(long, lat):
     global currentLat 
     global turnRadius 
     if firstRun:
-        previousLong = long - userLong
-        previousLat = lat - userLat
+        previousLong = longitude - userLong
+        previousLat = latitude - userLat
         #so we don't set the previous values to zero next run
         currentLong = previousLong
         currentLat = previousLat
@@ -42,8 +44,8 @@ def updatePosition(long, lat):
         previousLong = currentLong
         previousLat = currentLat
         #correct so we don't need to calculate big numbers
-        currentLong = long - userLong
-        currentLat = lat - userLat
+        currentLong = longitude - userLong
+        currentLat = latitude - userLat
         if(checkPosition(currentLat, currentLong, turnRadius)):
             return turn(previousLong, previousLat, currentLong, currentLat)
         else:
