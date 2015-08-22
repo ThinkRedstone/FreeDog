@@ -30,7 +30,7 @@ class Connector(Thread):
         print "Socket connected"
     def run(self):
         while self.running:
-            data = self.connection.recv(1024)
+            self.data = self.connection.recv(1024)
             print "Recived from server: " + str(data)
             sendData(index)
             index += 1
