@@ -9,34 +9,58 @@ __date__ = "$Jul 13, 2015 2:03:09 PM$"
 import socket
 from gpsProcessing.gpsData import startGPS,getTime,getAltitude, getLongitude, getLatitude, closeGPS
 from placment.circle import updatePosition
-import RPi.GPIO as GPIO
 from control import engines
-from connectToServer import connectToServer
 import os
 import time
 import traceback
 from threading import Thread
 ##from sql.logger import startLogger, stopLogger
+received = ''
 class Connector(Thread):
+        
     def __init__(self):
+        
         Thread.__init__(self)
+        
+        
+    def run(self):
+        global received
         self.running = True
-        self.index = 0
         print "Connecting to Server"
         host = '10.0.0.30'
+##        host = '91.205.155.231'
         port = 11000
-        self.connection = socket.socket()
-        self.connection.connect((host,port))
-        print "Socket connected"
-    def run(self):
-        while self.running:
-            self.data = self.connection.recv(1024)
-            print "Recived from server: " + str(data)
-            sendData(index)
-            index += 1
 
-def startConncetion():
-    global connector
+        while self.running:
+            self.index = 0
+            
+            try:
+                self.connection = socket.socket()
+                self.connection.connect((host,port))
+                print "Socket connected"
+
+                while self.running:
+                
+                
+                    for x in range(0, 10):
+                        time.sleep(0.1)
+
+        ##            sendData(index)
+                          
+                    self.toSend = str(self.index) + ";" + str(getLongitude()) + ';' + str(getLatitude()) + ';' + str(getAltitude()) + ';' + str(getTime())
+                    print "Send to server " + self.toSend
+                    self.connection.send(self.toSend)
+                    
+                    received = self.connection.recv(1024)
+                    print "Recived from server: " + str(received)
+        ##            sendData(index)
+                    self.index += 1
+            except Exception, err:
+                    print(traceback.format_exc())                
+                
+    
+def startConnection():
+    global connector    
     connector = Connector()
     startGPS()
     connector.start()
@@ -54,83 +78,67 @@ def sendData(index):
     connector.connection.send(toSend)
 
 def getData(place):
-    global connector
-    data = connector.data
-    return data.split(";")[place]
+    
+    global received
+    try:
+        ##print 'Data: ' + received
+        splitted = received.split(";")
+        if len(splitted) > place:
+            try:
+                return float(splitted[place])
+            except:
+                return 0
+        else:
+            return 0
+    except Exception, err:
+        print(traceback.format_exc())
+        print 'Data Error'
+        return 0
 
-def getUserLongitude():
-    return getData(1)
+def getUserLongtitude():
+    return getData(3)   
 
-def getUserLatitude():
+def getUserLatitude():   
     return getData(2)
 
-def getDistance():
+def getUserUTCseconds():   
+    return getData(1)
+
+def getDistance():    
     return getData(6)
 
-def getCommand():
+def getCommand():   
     return getData(5)
     
-if __name__ == "__main__":
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(13,GPIO.OUT)
-    GPIO.setup(16,GPIO.OUT)
-    GPIO.setup(19,GPIO.OUT)
-    startGPS()
-    ##engines.setup()
-    ##startLogger()
-    while True:
-        try:
-            for x in range(0, 10):
-                time.sleep(0.2)
-                val = x%2==0
-                GPIO.output(13,val)            
-            print "Connecting to Server"
-            host = '10.0.0.30'
-            port = 11000
-            s= socket.socket()
-            s.connect((host,port))
-            index = 0;
-            print "Socket connected"
-            GPIO.output(13,True)            
-            while True:
-                for x in range(0, 2):
-                    time.sleep(1)
-                    val = x%2==0
-                    GPIO.output(13,val)
-                
-                toSend = str(index) + ";" + str(getLongitude()) + ';' + str(getLatitude())
-                print "Send to server " + toSend
-                s.send(toSend)
-
-                data = s.recv(1024)                
-                print "Recived from server: " + str(data)   
-                                        
-                if data == '1000;CONNECT_TO_RAS':
-                    GPIO.output(13,True)
-                    while data != '1000;DISCONNECT':
-                        time.sleep(1)
-                        toSend = str(index) + ";" + str(getLongitude()) + ';' + str(getLatitude())
-                        print "Send to server " + toSend
-                        s.send(toSend)
-
-                        data = s.recv(1024)                
-                        print "Recived from server: " + str(data)
-                        if data == '1000;TURN_RIGHT':
-                            GPIO.output(16,True)
-                            time.sleep(1)
-                            GPIO.output(16,False)
-                        elif data == '1000;TURN_LEFT':
-                            GPIO.output(19,True)
-                            time.sleep(1)
-                            GPIO.output(19,False)
-
-                        index = index + 1
-                ##direction = updatePosition(getLongitude(),getLatitude())
-                ##print 'Turn: ', direction
-                ##engines.turn(direction, 1)
-                index = index + 1
-        except Exception, err:
-                    print(traceback.format_exc())
-    ##		stopLogger()
-              ##      closeGPS()
-                    print 'Disconnected...'
+##if __name__ == "__main__":    
+##    
+##    startGPS()
+##    ##engines.setup()
+##    ##startLogger()
+##    while True:
+##        try:
+##            notConnectedToServer()           
+##            print "Connecting to Server"
+##            host = '10.0.0.30'
+##            port = 11000
+##            s= socket.socket()
+##            s.connect((host,port))
+##            index = 0;
+##            print "Socket connected"
+####            GPIO.output(13,True)            
+##            while True:               
+##                socketConnected()
+##                toSend = str(index) + ";" + str(getLongitude()) + ';' + str(getLatitude())
+##                print "Send to server " + toSend
+##                s.send(toSend)
+##
+##                data = s.recv(1024)                
+##                print "Recived from server: " + str(data)   
+##                index = index + 1
+##                
+##        except Exception, err:
+##                    print(traceback.format_exc())
+##    ##		stopLogger()
+##              ##      closeGPS()
+##                    print 'Disconnected...'
+##

@@ -44,10 +44,10 @@ def getLatitude():
 def getAltitude():
     global gpsd
     return gpsd.fix.altitude
-
 def getTime():
         global gpsd
-        TIMEZ = 3  
+        TIMEZ = 3
+        gpstime = ''
         if gpsd.utc != None and gpsd.utc != '':
                 tzhour = int(gpsd.utc[11:13])+TIMEZ
                 if (tzhour>23):
@@ -60,14 +60,10 @@ def getTime():
                 TimeFix = str(tzhour) + gpsd.utc[13:19]
     
                 UTCseconds = dateUTC + timeUTC
-                print UTCseconds
-##                print time.mktime(d_utc.timetuple())
-##                print calendar.timegm(d_utc.timetuple())
-                gpstime = dateFix  + ' ' + TimeFix + ';' + str(UTCseconds)
+                gpstime = dateFix  + ' ' + TimeFix + ';' + str(int(UTCseconds))
                 
-                print 'Setting system time to GPS time...'
-                print gpstime
         return gpstime
+
 def closeGPS():#if you don't close the GPS, the programme won't stop as th gps inpt stream is still running
     global gpsp
     print "\nKilling Thread..."
