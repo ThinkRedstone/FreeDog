@@ -31,7 +31,7 @@ def log(index):
     execute("insert into log values(%d,%d,%d,%d,%s,%d,%d,%s,%d)" % (index, getLongitude(), getLatitude(), getTime(), getUserLatitude(), getUserLongtitude(), getCommand(), getDistance()))
 
 def startLogger():
-    startConnection("test")
+    startSQLConnection("test")
     deleteTable("log")
     createTable("log")
     global logger
