@@ -6,27 +6,31 @@
 
 __author__ = "thinkredstone"
 __date__ = "$Jul 13, 2015 2:03:09 PM$"
-from gpsProcessing.gpsData import startGPS, getLongitude, getLatitude, closeGPS
+from gpsProcessing.gpsData import *
 from placment.circle import updatePosition
-from control import engines
+from server.connector import *
+from control.engines import *
 import os
 from time import sleep
 from sql.logger import startLogger, stopLogger
 
 if __name__ == "__main__":
     startGPS()
-    engines.setup()
-    startLogger()
+    startConnection()
     try:
         while True:
             os.system('clear')
             print 'Long: ', getLongitude()
             print 'Lat: ', getLatitude()
+            updateUser(getUserLongtitude(),getUserLatitude())
+            turnRadius = getDistance()
             direction = updatePosition(getLongitude(),getLatitude())
             print 'Turn: ', direction
-            engines.turn(direction, 1)
-            sleep(1)
+            if(direction is 'left' || getCommand() is 'TURN_LEFT':
+                turnLeft()
+            if(direction is 'right' || getCommand is 'TURN_RIGHT':
+                turnRight()
     except(KeyboardInterrupt, SystemExit):
-		stopLogger()
-		closeGPS()
-	        print 'Exiting...'
+        closeConnection()
+        closeGPS()
+        print 'Exiting...'
