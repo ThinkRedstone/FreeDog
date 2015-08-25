@@ -25,9 +25,9 @@ if __name__ == "__main__":
             turnRadius = getDistance()
             direction = updatePosition(getLongitude(),getLatitude())
             print 'Turn: ', direction
-            if(direction is 'left' || getCommand() is 'TURN_LEFT':
+            if direction is 'left' or getCommand() is 'TURN_LEFT':
                 turnLeft()
-            if(direction is 'right' || getCommand is 'TURN_RIGHT':
+            if direction is 'right' or getCommand is 'TURN_RIGHT':
                 turnRight()
     except(KeyboardInterrupt, SystemExit):
         closeConnection()
