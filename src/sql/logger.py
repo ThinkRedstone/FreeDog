@@ -52,6 +52,4 @@ def deleteTable(name):
     execute("drop table " + name)
 
 if __name__ == "__main__":
-    startLogger()
-    sleep(15)
-    stopLogger()
+    execute("insert into log values(0,0,0,0,bla,0,0,blu,0)")
