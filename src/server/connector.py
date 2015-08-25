@@ -9,35 +9,58 @@ __date__ = "$Jul 13, 2015 2:03:09 PM$"
 import socket
 from gpsProcessing.gpsData import startGPS,getTime,getAltitude, getLongitude, getLatitude, closeGPS
 from placment.circle import updatePosition
-import RPi.GPIO as GPIO
 from control import engines
 import os
 import time
 import traceback
 from threading import Thread
 ##from sql.logger import startLogger, stopLogger
+received = ''
 class Connector(Thread):
+        
     def __init__(self):
+        
         Thread.__init__(self)
+        
+        
+    def run(self):
+        global received
         self.running = True
-        self.index = 0
         print "Connecting to Server"
         host = '10.0.0.30'
+##        host = '91.205.155.231'
         port = 11000
-        self.connection = socket.socket()
-        self.connection.connect((host,port))
-##        notConnectedToServer() 
-        print "Socket connected"
-##        socketConnected()
-    def run(self):        
-        while self.running:            
-            data = self.connection.recv(1024)
-            print "Recived from server: " + str(data)
-            sendData(index)
-            index += 1
 
+        while self.running:
+            self.index = 0
+            
+            try:
+                self.connection = socket.socket()
+                self.connection.connect((host,port))
+                print "Socket connected"
+
+                while self.running:
+                
+                
+                    for x in range(0, 10):
+                        time.sleep(0.1)
+
+        ##            sendData(index)
+                          
+                    self.toSend = str(self.index) + ";" + str(getLongitude()) + ';' + str(getLatitude()) + ';' + str(getAltitude()) + ';' + str(getTime())
+                    print "Send to server " + self.toSend
+                    self.connection.send(self.toSend)
+                    
+                    received = self.connection.recv(1024)
+                    print "Recived from server: " + str(received)
+        ##            sendData(index)
+                    self.index += 1
+            except Exception, err:
+                    print(traceback.format_exc())                
+                
+    
 def startConnection():
-    global connector
+    global connector    
     connector = Connector()
     startGPS()
     connector.start()
@@ -55,16 +78,31 @@ def sendData(index):
     connector.connection.send(toSend)
 
 def getData(place):
-    global connector
-    data = connector.data
-    print data
-    return data.split(";")[place]
+    
+    global received
+    try:
+        ##print 'Data: ' + received
+        splitted = received.split(";")
+        if len(splitted) > place:
+            try:
+                return float(splitted[place])
+            except:
+                return 0
+        else:
+            return 0
+    except Exception, err:
+        print(traceback.format_exc())
+        print 'Data Error'
+        return 0
 
-def getUserLongtitude():   
-    return getData(1)   
+def getUserLongtitude():
+    return getData(3)   
 
 def getUserLatitude():   
-    return getData(2)    
+    return getData(2)
+
+def getUserUTCseconds():   
+    return getData(1)
 
 def getDistance():    
     return getData(6)

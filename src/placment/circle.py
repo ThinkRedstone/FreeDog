@@ -4,7 +4,7 @@
 
 __author__ = "ThinkRedstone"
 __date__ = "$06-Jul-2015 20:58:59$"
-from math import *
+import math
 userLong = 0
 userLat = 0
 previousLong = 0
@@ -18,10 +18,8 @@ firstRun = True
 def setUser(longitude, latitude):
     global userLong
     global userLat
-##    userLong = longitude
-##    userLat = latitude
-    userLong = 5555
-    userLat = 4444
+    userLong = longitude
+    userLat = latitude
 
 def updatePosition(longitude, latitude):
     global firstRun
@@ -44,16 +42,48 @@ def updatePosition(longitude, latitude):
         previousLong = currentLong
         previousLat = currentLat
         #correct so we don't need to calculate big numbers
+       
         currentLong = longitude - userLong
         currentLat = latitude - userLat
-        if(checkPosition(currentLat, currentLong, turnRadius)):
+        if(checkPosition(latitude, longitude,userLat,userLong, turnRadius)):
             return turn(previousLong, previousLat, currentLong, currentLat)
         else:
             return "OK"
 
 
-def checkPosition(currentLat, currentLong, turnRadius):
-    return sqrt(currentLat ** 2 + currentLong ** 2) > turnRadius
+def checkPosition(lat1, long1, lat2, long2, turnRadius):
+    
+    # Convert latitude and longitude to 
+    # spherical coordinates in radians.
+    degrees_to_radians = math.pi/180.0
+         
+    # phi = 90 - latitude
+    phi1 = (90.0 - lat1)*degrees_to_radians
+    phi2 = (90.0 - lat2)*degrees_to_radians
+         
+    # theta = longitude
+    theta1 = long1*degrees_to_radians
+    theta2 = long2*degrees_to_radians
+         
+    # Compute spherical distance from spherical coordinates.
+         
+    # For two locations in spherical coordinates 
+    # (1, theta, phi) and (1, theta', phi')
+    # cosine( arc length ) = 
+    #    sin phi sin phi' cos(theta-theta') + cos phi cos phi'
+    # distance = rho * arc length
+     
+    cos = (math.sin(phi1)*math.sin(phi2)*math.cos(theta1 - theta2) + 
+           math.cos(phi1)*math.cos(phi2))
+    arc = math.acos( cos )
+ 
+    # Remember to multiply arc by the radius of the earth 
+    # in your favorite set of units to get length.
+    kilometerDist = arc * 6373
+    meterDist = kilometerDist * 1000
+    toReturn = meterDist > turnRadius
+    print 'distance android to ras is ' + str(meterDist)
+    return toReturn
 
 #true for left, false for right
 def turn(previousLong, previousLat, currentLong, currentLat):

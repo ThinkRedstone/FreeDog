@@ -14,21 +14,27 @@ import os
 from time import sleep
 
 if __name__ == "__main__":
-    startGPS()
+    
+##    startGPS()
     startConnection()
     try:
         while True:
-            os.system('clear')
-            print 'Long: ', getLongitude()  #from raspberry
-            print 'Lat: ', getLatitude() #from raspberry
+##            os.system('clear')            
+##            print 'Long: ', getLongitude()  #from raspberry
+##            print 'Lat: ', getLatitude() #from raspberry
             setUser(getUserLongtitude(),getUserLatitude()) #from client
             turnRadius = getDistance()
             direction = updatePosition(getLongitude(),getLatitude())
-            print 'Turn: ', direction
-            if((direction is 'left') or (getCommand() is 'TURN_LEFT')):
-                turnLeft()
-            if((direction is 'right') or (getCommand is 'TURN_RIGHT')):
+##            print 'Turn: ', direction
+            if((direction == 'left') or (getCommand() is 'TURN_LEFT')):
+                print 'turn Left'
+                turnLeft()                 
+            if((direction == 'right') or (getCommand() is 'TURN_RIGHT')):
+                print 'turn Right'
                 turnRight()
+                
+
+           
     except(KeyboardInterrupt, SystemExit):
         closeConnection()
         closeGPS()
