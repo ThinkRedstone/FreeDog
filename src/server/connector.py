@@ -6,14 +6,17 @@
 
 __author__ = "thinkredstone"
 __date__ = "$Jul 13, 2015 2:03:09 PM$"
-import socket
-from gpsProcessing.gpsData import startGPS,getTime,getAltitude, getLongitude, getLatitude, closeGPS
-from placment.circle import updatePosition
 from control import engines
-import os
+from gpsProcessing.gpsData import closeGPS
+from gpsProcessing.gpsData import getAltitude
+from gpsProcessing.gpsData import getLatitude
+from gpsProcessing.gpsData import getLongitude
+from gpsProcessing.gpsData import getTime
+from gpsProcessing.gpsData import startGPS
+import socket
+from threading import Thread
 import time
 import traceback
-from threading import Thread
 ##from sql.logger import startLogger, stopLogger
 received = ''
 class Connector(Thread):
@@ -40,7 +43,7 @@ class Connector(Thread):
                 print "Socket connected"
 
                 while self.running:
-                
+                    engines.socketConnectedLights()
                 
                     for x in range(0, 10):
                         time.sleep(0.1)

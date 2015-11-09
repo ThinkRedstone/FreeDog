@@ -19,6 +19,7 @@ if __name__ == "__main__":
     startConnection()
     try:
         while True:
+            runningLights()
 ##            os.system('clear')            
 ##            print 'Long: ', getLongitude()  #from raspberry
 ##            print 'Lat: ', getLatitude() #from raspberry
