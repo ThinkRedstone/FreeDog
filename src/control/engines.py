@@ -11,9 +11,10 @@ rightMotor = 16
 ##GPIO.cleanup()
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(13, GPIO.OUT)
-GPIO.setup(16, GPIO.OUT)
-GPIO.setup(19, GPIO.OUT)
+GPIO.setup(connectionLed,GPIO.OUT)
+GPIO.setup(runningLed,GPIO.OUT)
+GPIO.setup(leftMotor,GPIO.OUT)
+GPIO.setup(rightMotor,GPIO.OUT)
 
 class ConnectionLight(Thread):
     def __init__(self):
@@ -43,21 +44,21 @@ class RunningLight(Thread):
         self.running = False
 
 def turnLeft():
-    GPIO.output(19, True)
+    GPIO.output(leftMotor, True)
     time.sleep(2)
-    GPIO.output(19, False)
-    GPIO.output(16, True)
+    GPIO.output(leftMotor, False)
+    GPIO.output(rightMotor, True)
     time.sleep(2)
-    GPIO.output(16, False)
+    GPIO.output(rightMotor, False)
     time.sleep(10)
 
 def turnRight():
-    GPIO.output(19, True)
+    GPIO.output(rightMotor, True)
     time.sleep(2)
-    GPIO.output(19, False)
-    GPIO.output(16, True)
+    GPIO.output(rightMotor, False)
+    GPIO.output(leftMotor, True)
     time.sleep(2)
-    GPIO.output(16, False)
+    GPIO.output(leftMotor, False)
     time.sleep(10)
 
 def runningLights():
