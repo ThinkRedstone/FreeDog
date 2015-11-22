@@ -67,7 +67,7 @@ def runningLights():
         if not runLightThread.running:
             runLightThread = RunningLight()
             runLightThread.start()
-    finally:
+    except NameError:
         runLightThread = RunningLight()
         runLightThread.start()
 
@@ -77,6 +77,6 @@ def socketConnectedLights():
         if not connectionLightThread.running:
             connectionLightThread = ConnectionLight()
             connectionLightThread.start()
-    finally:
+    except NameError:
         connectionLightThread = ConnectionLights()
         connectionLightThread.start()
